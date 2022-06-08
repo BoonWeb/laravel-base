@@ -27,33 +27,4 @@ docker build \
 
 ## How to use in your own project
 
-Create a Dockerfile with following contents inside your project and run `docker build`:
-
-```Dockerfile
-FROM composer:2 AS vendor
-WORKDIR /app
-COPY composer.json /app/composer.json
-COPY composer.lock /app/composer.lock
-
-RUN composer install \
-    --optimize-autoloader \
-    --no-dev \
-    --no-scripts \
-    --ignore-platform-reqs \
-    --no-interaction \
-    --no-plugins
-
-FROM docker.io/boonweb/laravel-base:latest
-
-ENV PATH=/app/vendor/bin:$PATH
-
-COPY --chown=www-user . /app
-COPY --chown=www-user --from=vendor /app/vendor ./vendor
-
-RUN composer dump-autoload && \
-    php artisan optimize --ansi --no-interaction && \
-    php artisan package:discover --ansi --no-interaction && \
-    php artisan storage:link --ansi --no-interaction
-```
-
-> You might want to add a build step to install yarn/npm packages and copy them to the final image.
+See `examples/` folder to get an idea on how to use this base image.

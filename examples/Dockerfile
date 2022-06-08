@@ -44,7 +44,7 @@ COPY --chown=www-user . /app
 COPY --chown=www-user --from=vendor /app/vendor ./vendor
 COPY --chown=www-user --from=assets /app/public/js/ /app/public/js/
 COPY --chown=www-user --from=assets /app/public/css/ /app/public/css/
-COPY --chown=www-user --from=assets /app/mix-manifest.json /app/mix-manifest.json
+COPY --chown=www-user --from=assets /app/public/mix-manifest.json /app/public/mix-manifest.json
 
 RUN composer dump-autoload && \
     php artisan optimize --ansi --no-interaction && \
