@@ -1,8 +1,10 @@
+![GitHub](https://img.shields.io/github/license/BoonWeb/laravel-base?style=plastic)
+![Docker Image Version (latest semver)](https://img.shields.io/docker/v/boonweb/laravel-base?style=plastic)
 # laravel-base
 
 Base image for production ready laravel projects.
 
-This image contains PHP and NGINX already configured to serve a laravel applicatino from `/app` folder.
+This image contains PHP and NGINX already configured to serve a laravel application from `/app` folder.
 
 ## Build image
 
