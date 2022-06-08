@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+if [ -n "$WWWUSER" ]; then
+    usermod -u "$WWWUSER" www-user
+fi
+
+DEFAULT_APP_PHP_HOST=127.0.0.1
+DEFAULT_APP_PHP_PORT=9000
+APP_PHP_HOST="${APP_PHP_HOST:-${DEFAULT_APP_PHP_HOST}}"
+APP_PHP_PORT="${APP_PHP_PORT:-${DEFAULT_APP_PHP_PORT}}"
+
+APP_ENV="${APP_ENV:-production}"
+
+figlet 'BoonWeb' -f slant
+
+if [ "$APP_ENV" = "production" ]; then
+    php artisan route:cache
+    php artisan config:cache
+    php artisan view:cache
+fi
+
+role=${CONTAINER_ROLE:-app}
+
+if [ "$role" = "horizon" ]; then
+    echo "##### Horizon is ready..."
+    php /app/artisan horizon
+elif [ "$role" = "cron" ]; then
+    echo "##### Schedule container is ready..."
+    php /app/artisan schedule:run --verbose --no-interaction &
+    sleep 60s
+    exit 0
+elif [ "$role" = "test" ]; then
+    echo "##### Test container is ready..."
+    exec "$@"
+elif [ "$role" = "migrate" ]; then
+    echo "##### Running database migrations..."
+
+    # Ensure we have a database to work with... (Create a db:create command if you want this functionality)
+    php artisan db:create || true
+    php artisan migrate --force || exit 1
+
+    # docker swarm/k8s will restart the container if we exit.
+    sleep 1d
+else
+    # Adjust nginx configuration to match our environment
+    sed -i "s|DEFAULT_APP_PHP_HOST|${APP_PHP_HOST}|i" /home/www-user/nginx/conf.d/default.conf
+    sed -i "s|DEFAULT_APP_PHP_PORT|${APP_PHP_PORT}|i" /home/www-user/nginx/conf.d/default.conf
+
+    echo "##### Application is ready..."
+    /usr/bin/sudo /usr/sbin/php-fpm8.1 -D -c /etc/php/8.1/fpm/php-fpm.conf
+    nginx -g 'daemon off;' -c /home/www-user/nginx/nginx.conf -p /home/www-user/nginx
+fi

@@ -1,0 +1,32 @@
+# This file MUST be edited with the 'visudo' command as root.
+#
+# See the sudoers man page for the details on how to write a sudoers file.
+
+##
+# Override built-in defaults
+##
+Defaults		syslog=auth,runcwd=~
+Defaults>root		!set_logname
+Defaults:FULLTIMERS	!lecture,runchroot=*
+Defaults:millert	!authenticate
+Defaults@SERVERS	log_year, logfile=@log_dir@/sudo.log
+Defaults!PAGERS		noexec
+
+##
+# User alias specification
+##
+User_Alias	WEBADMIN = www-user
+
+##
+# User specification
+##
+www-user	ALL = (ALL:ALL) NOPASSWD: /usr/sbin/php-fpm8.1
+
+# root and users in group wheel can run anything on any machine as any user
+root		ALL = (ALL:ALL) ALL
+%wheel		ALL = (ALL:ALL) ALL
+
+# users in the WEBADMIN User_Alias (www-user)
+# may run any command as user www-user (which owns the web pages)
+# or simply su to www-user.
+WEBADMIN	www-user = (www-user) ALL, (root) /usr/bin/su www-user
