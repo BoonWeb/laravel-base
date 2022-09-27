@@ -13,7 +13,7 @@ RUN composer install \
     --no-plugins
 
 # --- JS/CSS ASSETS
-FROM node:16 as assets
+FROM node:16-bullseye as assets
 WORKDIR /app
 RUN mkdir -p /app/public
 COPY package.json webpack.*.js tailwind.*.js yarn.lock /app/
