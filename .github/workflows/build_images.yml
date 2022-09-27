@@ -6,6 +6,9 @@ on:
     branches:
       - develop
 
+env:
+  DOCKER_IMAGE: boonweb/laravel-base
+
 jobs:
   docker:
     runs-on: ubuntu-latest
