@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 if [ -n "$WWWUSER" ]; then
     usermod -u "$WWWUSER" www-user
