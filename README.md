@@ -10,7 +10,7 @@ This image contains PHP and NGINX already configured to serve a laravel applicat
 
 ```bash
 export CONTAINER_IMAGE=boonweb/laravel-base
-export BUILD_VERSION=1.0.0
+export BUILD_VERSION=1.0.1
 export CI_COMMIT_SHORT_SHA=d3ed58b0fe
 
 DOCKER_BUILDKIT=1 \
@@ -23,6 +23,10 @@ docker build \
     --tag ${CONTAINER_IMAGE}:${BUILD_VERSION} \
     --tag ${CONTAINER_IMAGE}:latest \
     --file "Dockerfile" .
+docker login -u boonweb
+# > enter access token
+docker push ${CONTAINER_IMAGE}:${BUILD_VERSION}
+docker push ${CONTAINER_IMAGE}:latest
 ```
 
 ## How to use in your own project
