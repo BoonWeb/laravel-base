@@ -17,6 +17,11 @@ if [ "$APP_ENV" = "production" ]; then
     php artisan route:cache
     php artisan config:cache
     php artisan view:cache
+    
+    /usr/bin/composer dump-autoload --no-interaction --no-plugins --no-scripts --ansi
+    php artisan optimize --ansi --no-interaction
+    php artisan package:discover --ansi --no-interaction
+    php artisan storage:link --ansi --no-interaction
 fi
 
 role=${CONTAINER_ROLE:-app}

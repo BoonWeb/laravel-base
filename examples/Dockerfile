@@ -46,7 +46,7 @@ COPY --chown=www-user --from=assets /app/public/js/ /app/public/js/
 COPY --chown=www-user --from=assets /app/public/css/ /app/public/css/
 COPY --chown=www-user --from=assets /app/public/mix-manifest.json /app/public/mix-manifest.json
 
-RUN composer dump-autoload && \
+RUN /usr/bin/composer dump-autoload --no-interaction --no-plugins --no-scripts --ansi && \
     php artisan optimize --ansi --no-interaction && \
     php artisan package:discover --ansi --no-interaction && \
     php artisan storage:link --ansi --no-interaction
