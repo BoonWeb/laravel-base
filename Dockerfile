@@ -54,9 +54,10 @@ RUN apt-get update \
        php8.1-ldap \
        php8.1-msgpack php8.1-igbinary php8.1-redis php8.1-swoole \
        php8.1-memcached \
+       nodejs npm \
     && php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer \
     && apt-get update \
-    && apt-get install -y yarn \
+    && npm i -g yarn \
     && apt-get install -y mariadb-client \
 #    && apt-get install -y postgresql-client-$POSTGRES_VERSION \
     && apt-get -y autoremove \
