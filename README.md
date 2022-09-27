@@ -10,14 +10,13 @@ This image contains PHP and NGINX already configured to serve a laravel applicat
 
 ```bash
 export CONTAINER_IMAGE=boonweb/laravel-base
-export BUILD_VERSION=1.0.3
+export BUILD_VERSION=1.0.4
 export CI_COMMIT_SHORT_SHA=d3ed58b0fe
 
 DOCKER_BUILDKIT=1 \
 docker build \
     --no-cache \
     --pull \
-    --platform linux/amd64,linux/arm64
     --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
     --build-arg BUILD_VERSION=${BUILD_VERSION} \
     --build-arg VCS_REF=${CI_COMMIT_SHORT_SHA} \
@@ -33,3 +32,7 @@ docker push ${CONTAINER_IMAGE}:latest
 ## How to use in your own project
 
 See `examples/` folder to get an idea on how to use this base image.
+
+# TODO 
+
+- build for multiple platforms/architectures: `--platform linux/amd64,linux/arm64` with **buildx**
