@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 set -e
 
@@ -57,5 +57,5 @@ elif [ "$role" = "app" ]; then
     nginx -g 'daemon off;' -c /home/www-user/nginx/nginx.conf -p /home/www-user/nginx
 else
   echo "##### Container is ready..."
-  exec "$@"
+  exec "/bin/bash"
 fi
